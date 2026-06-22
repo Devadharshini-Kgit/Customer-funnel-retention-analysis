@@ -1,8 +1,8 @@
-# E-Commerce Funnel, Retention & A/B Test Analysis
+# Commerce Funnel, Retention & A/B Test Analysis
 
 A product analytics case study analyzing user conversion behavior across the customer journey — from product view to purchase — including cohort retention tracking and a checkout A/B experiment.
 
-**[Live Dashboard →](#)** *(replace with your GitHub Pages link after deployment)*
+**[Live Dashboard →](https://devadharshini-kgit.github.io/Customer-funnel-retention-analysis/)**
 
 ## Overview
 
