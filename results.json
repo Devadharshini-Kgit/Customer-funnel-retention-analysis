@@ -1,0 +1,95 @@
+{
+  "funnel": {
+    "view": 6000,
+    "cart": 2273,
+    "purchase": 950
+  },
+  "funnel_pct": {
+    "view": 100.0,
+    "cart": 37.9,
+    "purchase": 15.8
+  },
+  "drop_off": {
+    "view_to_cart": 62.1,
+    "cart_to_purchase": 58.2
+  },
+  "cohort_retention": [
+    {
+      "cohort": "2025-01",
+      "cohort_size": 1019,
+      "purchasers": 161,
+      "M0": 100.0,
+      "M1": 32.5,
+      "M2": 18.2,
+      "M3": 10.6
+    },
+    {
+      "cohort": "2025-02",
+      "cohort_size": 965,
+      "purchasers": 152,
+      "M0": 100.0,
+      "M1": 40.6,
+      "M2": 27.1,
+      "M3": 18.4
+    },
+    {
+      "cohort": "2025-03",
+      "cohort_size": 983,
+      "purchasers": 155,
+      "M0": 100.0,
+      "M1": 29.1,
+      "M2": 19.7,
+      "M3": 14.6
+    },
+    {
+      "cohort": "2025-04",
+      "cohort_size": 1009,
+      "purchasers": 159,
+      "M0": 100.0,
+      "M1": 35.0,
+      "M2": 19.5,
+      "M3": 11.0
+    },
+    {
+      "cohort": "2025-05",
+      "cohort_size": 1024,
+      "purchasers": 162,
+      "M0": 100.0,
+      "M1": 34.4,
+      "M2": 22.1,
+      "M3": 16.3
+    },
+    {
+      "cohort": "2025-06",
+      "cohort_size": 1000,
+      "purchasers": 158,
+      "M0": 100.0,
+      "M1": 34.4,
+      "M2": 22.3,
+      "M3": 13.2
+    }
+  ],
+  "ab_test": {
+    "variant_a": {
+      "name": "Original Checkout",
+      "n": 3000,
+      "conversions": 1241,
+      "rate": 41.37
+    },
+    "variant_b": {
+      "name": "Simplified Checkout",
+      "n": 3000,
+      "conversions": 1396,
+      "rate": 46.53
+    },
+    "lift_pct": 12.5,
+    "z_score": 4.03,
+    "p_value": 0.0001,
+    "significant": true,
+    "confidence_level": "95%"
+  },
+  "meta": {
+    "total_users": 6000,
+    "dataset_note": "Synthetic dataset generated with realistic e-commerce conversion distributions"
+  }
+}

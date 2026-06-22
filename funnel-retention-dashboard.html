@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Funnel & Retention Analytics — Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F6F8;
+    --paperAlt: #ECEEF3;
+    --ink: #161B28;
+    --inkSoft: #4A5066;
+    --indigo: #3447D1;
+    --amber: #E2992F;
+    --sage: #3E8C6B;
+    --rose: #C4554C;
+    --line: #D7DAE3;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+  }
+  .display { font-family: 'Fraunces', serif; }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  header { padding-top: 56px; padding-bottom: 40px; }
+  .tag { display:flex; align-items:center; gap:8px; margin-bottom:24px; }
+  .dot { width:8px; height:8px; border-radius:50%; background: var(--amber); }
+  .eyebrow-text { font-size:12px; letter-spacing:0.2em; text-transform:uppercase; color: var(--inkSoft); }
+  h1 { font-size: 42px; line-height: 1.15; margin: 0 0 16px; font-weight: 600; }
+  h1 span { color: var(--sage); }
+  .lede { max-width: 560px; color: var(--inkSoft); font-size: 16px; line-height:1.5; }
+
+  .funnel { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:1px; background: var(--line); margin-top:48px; }
+  .stage { background: var(--paper); padding:24px; display:flex; flex-direction:column; justify-content:flex-end; transition: background 0.2s; }
+  .stage:hover { background: var(--paperAlt); }
+  .bar { height:4px; width:100%; margin-bottom:16px; }
+  .count { font-size:30px; font-weight:500; }
+  .label { font-size:14px; color: var(--inkSoft); margin-top:4px; }
+  .pct { font-size:12px; color: var(--inkSoft); margin-top:4px; }
+  .dropoffs { display:flex; justify-content:space-between; margin-top:12px; padding:0 4px; }
+  .dropoffs span { font-size:12px; color: var(--rose); }
+
+  section { padding: 40px 0; border-top: 1px solid var(--line); }
+  .eyebrow { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .badge-num { background: var(--indigo); color:#fff; font-size:12px; letter-spacing:0.15em; padding:4px 8px; border-radius:2px; }
+  h2 { font-size:24px; font-weight:600; margin: 0 0 8px; }
+  .sub { font-size:14px; color: var(--inkSoft); margin-bottom:24px; max-width:560px; }
+
+  .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+  .card { background: var(--paperAlt); padding:20px; border-radius:2px; }
+  .card-label { font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color: var(--inkSoft); margin-bottom:8px; }
+  .card-stat { font-size:28px; color: var(--rose); font-weight:600; }
+  .card-text { font-size:14px; color: var(--inkSoft); margin-top:8px; line-height:1.5; }
+
+  table { width:100%; border-collapse: collapse; font-size:14px; }
+  th { text-align:left; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: var(--inkSoft); padding:8px 8px 8px 0; font-weight:500; }
+  th.center, td.center { text-align:center; }
+  td { padding:8px; border-top:1px solid var(--line); }
+  .cell { border-radius:2px; padding:8px 4px; font-size:12px; text-align:center; }
+  .insight { font-size:12px; color: var(--inkSoft); margin-top:16px; }
+
+  .ab-grid { display:grid; grid-template-columns: 1fr 1fr; gap:32px; align-items:center; }
+  .chart-bar-wrap { display:flex; align-items:flex-end; gap:24px; height:220px; padding-bottom: 28px; border-bottom: 1px solid var(--line); position:relative;}
+  .chart-col { display:flex; flex-direction:column; align-items:center; flex:1; }
+  .chart-bar { width:60%; border-radius: 3px 3px 0 0; }
+  .chart-val { font-size:13px; margin-bottom:6px; font-weight:600; }
+  .chart-name { font-size:11px; color: var(--inkSoft); margin-top:8px; text-align:center; }
+
+  .stat-row { display:flex; justify-content:space-between; align-items:baseline; padding:8px 0; }
+  .stat-row .k { font-size:14px; color: var(--inkSoft); }
+  .stat-row .v { font-size:18px; }
+  .lift-val { font-size:30px; color: var(--sage); font-weight:600; }
+  .sig-badge { display:inline-block; margin-top:12px; padding:8px 12px; border-radius:2px; background: var(--sage); color:#fff; font-size:12px; letter-spacing:0.05em; }
+  .reco { font-size:14px; color: var(--inkSoft); margin-top:12px; line-height:1.5; }
+
+  footer { padding: 32px 0 60px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:24px; font-size:11px; color: var(--inkSoft); }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 30px; }
+    .funnel { grid-template-columns: 1fr; }
+    .stage { height:auto !important; }
+    .grid2, .ab-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="tag"><div class="dot"></div><span class="eyebrow-text">Product Analytics Case Study · Synthetic Dataset</span></div>
+    <h1 class="display">Where 6,000 visitors<br>become <span>950 customers</span></h1>
+    <p class="lede">A funnel, cohort retention, and A/B experiment analysis built to mirror how product teams measure conversion and growth — from first view to repeat purchase.</p>
+
+    <div class="funnel">
+      <div class="stage" style="height:220px;">
+        <div class="bar" style="background:var(--indigo);"></div>
+        <div class="count mono" style="color:var(--indigo);">6,000</div>
+        <div class="label">Viewed</div>
+        <div class="pct mono">100.0% of total</div>
+      </div>
+      <div class="stage" style="height:182px;">
+        <div class="bar" style="background:var(--amber);"></div>
+        <div class="count mono" style="color:var(--amber);">2,273</div>
+        <div class="label">Added to Cart</div>
+        <div class="pct mono">37.9% of total</div>
+      </div>
+      <div class="stage" style="height:144px;">
+        <div class="bar" style="background:var(--sage);"></div>
+        <div class="count mono" style="color:var(--sage);">950</div>
+        <div class="label">Purchased</div>
+        <div class="pct mono">15.8% of total</div>
+      </div>
+    </div>
+    <div class="dropoffs">
+      <span class="mono">↓ 62.1% drop</span>
+      <span class="mono">↓ 58.2% drop</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow"><span class="badge-num mono">01</span><span class="eyebrow-text">Funnel Breakdown</span></div>
+    <h2 class="display">Two drop-off points define the journey</h2>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-label">View → Cart</div>
+        <div class="card-stat display">62.1% leave</div>
+        <div class="card-text">Largest single drop-off. Typically driven by pricing visibility, product detail clarity, or trust signals at first view.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Cart → Purchase</div>
+        <div class="card-stat display">58.2% leave</div>
+        <div class="card-text">Checkout friction stage — this is the exact gap the A/B experiment below was designed to close.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="badge-num mono">02</span><span class="eyebrow-text">Cohort Retention</span></div>
+    <h2 class="display">Do customers come back?</h2>
+    <p class="sub">Six monthly signup cohorts, tracked by % of purchasers still active in each following month. Darker cells indicate stronger retention.</p>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr><th>Cohort</th><th>Size</th><th class="center">M0</th><th class="center">M1</th><th class="center">M2</th><th class="center">M3</th></tr>
+      </thead>
+      <tbody id="cohort-body"></tbody>
+    </table>
+    </div>
+    <p class="insight mono">Insight: retention consistently drops ~50% month-over-month — the steepest fall is between M0 and M1, suggesting a re-engagement window worth targeting with lifecycle emails.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="badge-num mono">03</span><span class="eyebrow-text">A/B Experiment</span></div>
+    <h2 class="display">Does a simplified checkout convert better?</h2>
+    <p class="sub">3,000 users per variant. Two-proportion z-test at 95% confidence.</p>
+    <div class="ab-grid">
+      <div class="chart-bar-wrap">
+        <div class="chart-col">
+          <div class="chart-val mono">41.37%</div>
+          <div class="chart-bar" style="height:140px; background:var(--inkSoft);"></div>
+          <div class="chart-name">Original<br>Checkout</div>
+        </div>
+        <div class="chart-col">
+          <div class="chart-val mono">46.53%</div>
+          <div class="chart-bar" style="height:158px; background:var(--sage);"></div>
+          <div class="chart-name">Simplified<br>Checkout</div>
+        </div>
+      </div>
+      <div>
+        <div class="stat-row"><span class="k">Lift</span><span class="lift-val display">+12.5%</span></div>
+        <div class="stat-row"><span class="k">z-score</span><span class="v mono">4.03</span></div>
+        <div class="stat-row"><span class="k">p-value</span><span class="v mono">0.0001</span></div>
+        <div class="sig-badge mono">STATISTICALLY SIGNIFICANT (p &lt; 0.05)</div>
+        <p class="reco">Recommendation: ship the simplified checkout. The 12.5% lift is unlikely to be due to chance at 95% confidence.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="mono">METHOD: Funnel · Cohort Retention · Two-Proportion Z-Test</span>
+    <span class="mono">STACK: Python (pandas, scipy) · SQL-style aggregation · HTML/CSS</span>
+    <span class="mono">DATA: Synthetic, modeled on realistic e-commerce conversion distributions</span>
+  </footer>
+</div>
+
+<script>
+  const cohorts = [
+    { cohort: "2025-01", size: 1019, M0: 100.0, M1: 32.5, M2: 18.2, M3: 10.6 },
+    { cohort: "2025-02", size: 965, M0: 100.0, M1: 40.6, M2: 27.1, M3: 18.4 },
+    { cohort: "2025-03", size: 983, M0: 100.0, M1: 29.1, M2: 19.7, M3: 14.6 },
+    { cohort: "2025-04", size: 1009, M0: 100.0, M1: 35.0, M2: 19.5, M3: 11.0 },
+    { cohort: "2025-05", size: 1024, M0: 100.0, M1: 34.4, M2: 22.1, M3: 16.3 },
+    { cohort: "2025-06", size: 1000, M0: 100.0, M1: 34.4, M2: 22.3, M3: 13.2 },
+  ];
+
+  function cellShade(v) {
+    const clamped = Math.max(0, Math.min(45, v));
+    const alpha = 0.12 + (clamped / 45) * 0.78;
+    return `rgba(62,140,107,${alpha.toFixed(2)})`;
+  }
+
+  const tbody = document.getElementById('cohort-body');
+  cohorts.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="mono">${c.cohort}</td>
+      <td class="mono" style="color:var(--inkSoft);">${c.size.toLocaleString()}</td>
+      <td class="center"><div class="cell mono" style="background:${cellShade(c.M0)}; color:#fff;">${c.M0}%</div></td>
+      <td class="center"><div class="cell mono" style="background:${cellShade(c.M1)}; color:${c.M1>25?'#fff':'#161B28'};">${c.M1}%</div></td>
+      <td class="center"><div class="cell mono" style="background:${cellShade(c.M2)}; color:${c.M2>25?'#fff':'#161B28'};">${c.M2}%</div></td>
+      <td class="center"><div class="cell mono" style="background:${cellShade(c.M3)}; color:${c.M3>25?'#fff':'#161B28'};">${c.M3}%</div></td>
+    `;
+    tbody.appendChild(tr);
+  });
+</script>
+</body>
+</html>
